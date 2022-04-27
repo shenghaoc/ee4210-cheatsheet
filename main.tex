@@ -80,11 +80,47 @@
     \setlength{\multicolsep}{1pt}
     \setlength{\columnsep}{2pt}
 
-    \section{Network Delays and Losses}
+    \section{Introduction}
+
+    \subsection{Network Delays and Losses}
     $d_{\text{nodal}}=d_{\text{proc}}+d_{\text{queue}}+d_{\text{trans}}+d_{\text{pop}}$\\
-    $d_{\text{trans}}=\frac{L}{R}$ ($L$: length of packet, $R$: transmission rate)\\
+    $d_{\text{trans}}=\frac{L\text{(bits)}}{R(\text{bits/sec})}$ ($L$: length of packet, $R$: transmission rate)\\
     $d_{\text{queue}}=d_{\text{trans}}\times l_{\text{queue}}$, ($l_{\text{queue}}$: average length of queue) \\
     $d_{\text{prop}}=\frac{D}{s}$ ($D$: distance between nodes, $s$: propagation speed)\\
+
+    \subsection{Packet Switching vs Circuit Switching}
+    \begin{itemize}
+        \item great for bursty data
+        \item simpler, no call setup
+        \item excessive congestion possible: packet delay and loss
+        \item protocols needed for reliable data transfer, congestion control
+    \end{itemize}
+
+    \subsection{Throughput}
+    throughput: rate (bits/time unit) at which bits transferred between
+    sender/receiver
+
+    \subsection{Internet Protocol Stack}
+    \begin{itemize}
+        \item \textbf{application}: supporting network applications
+              FTP, SMTP, HTTP
+        \item presentation: allow applications to
+              interpret meaning of data, e.g., encryption,
+              compression, machine-specific
+              conventions
+        \item session: synchronization, checkpointing,
+              recovery of data exchange
+        \item \textbf{transport}: process-process data transfer
+              TCP, UDP
+        \item \textbf{network}: routing of datagrams from source to
+              destination
+              IP, routing protocols
+        \item \textbf{link}: data transfer between neighboring
+              network elements
+              Ethernet, 802.111 (WiFi), PPP
+        \item \textbf{physical}: bits ``on the wire''
+    \end{itemize}
+    Presentation and session from ISO/OSI must be implemented in application \textit{if needed}
 
     \section{Mobile IP}
     Pros:
