@@ -86,6 +86,22 @@
     $d_{\text{queue}}=d_{\text{trans}}\times l_{\text{queue}}$, ($l_{\text{queue}}$: average length of queue) \\
     $d_{\text{prop}}=\frac{D}{s}$ ($D$: distance between nodes, $s$: propagation speed)\\
 
+    \section{Mobile IP}
+    Pros:
+    \begin{enumerate}
+        \item no need to propagate routing updates again
+        \item no need to modify routers
+        \item does not create additional entries in routing table
+        \item preserves location privacy
+    \end{enumerate}
+    Cons:
+    \begin{enumerate}
+        \item inefficiency of triangle routing
+        \item packet header overhead of encapsulation
+        \item home agent is single point of failure
+        \item need to allocate an adress in foreign network
+    \end{enumerate}
+
     \section{Fourier Transform}
     Delta function:
     1D:
