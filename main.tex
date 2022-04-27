@@ -31,11 +31,13 @@
 \usepackage{amsmath}
 \usepackage{stix2}
 \usepackage{siunitx}
+\usepackage{enumitem}
 
 \usepackage{multicol,multirow}
 \usepackage{ifthen}
 \usepackage[landscape]{geometry}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\setlist[itemize]{noitemsep, nolistsep}
 
 \ifthenelse{\lengthtest { \paperwidth = 11in}}
     { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
@@ -120,7 +122,178 @@
               Ethernet, 802.111 (WiFi), PPP
         \item \textbf{physical}: bits ``on the wire''
     \end{itemize}
-    Presentation and session from ISO/OSI must be implemented in application \textit{if needed}
+    presentation and session from ISO/OSI must be implemented in application \textit{if needed}
+
+    \section{Transport Layer}
+    \subsection{Transport Services and Protocols}
+    \begin{itemize}
+        \item provide logical communication
+              between app processes running on
+              different hosts
+        \item transport protocols run in end
+              systems
+              \begin{itemize}
+                  \item send side: breaks app messages
+                        into segments, passes to
+                        network layer
+                  \item rcv side: reassembles segments
+                        into messages, passes to app
+                        layer
+              \end{itemize}
+    \end{itemize}
+
+    \subsection{TCP vs UDP}
+    \begin{itemize}
+        \item TCP (reliable, in-order delivery)
+              \begin{itemize}
+                  \item congestion control
+                  \item flow control
+                  \item connection setup
+              \end{itemize}
+        \item UDP (unreliable, unordered
+              delivery)
+              \begin{itemize}
+                  \item no-frills extension of
+                        ``best-effort" IP
+              \end{itemize}
+    \end{itemize}
+    services not available:
+    \begin{itemize}
+        \item delay guarantees
+        \item bandwidth guarantees
+    \end{itemize}
+
+    \subsection{Connection-Oriented Demux}
+    TCP socket identified by 4-tuple:
+    \begin{itemize}
+        \item source IP address
+        \item source port number
+        \item dest IP address
+        \item dest port number
+    \end{itemize}
+
+    \subsection{UDP}
+    Maybe lost or delivered out-of-order\\
+    Connectionless: no handshaking between UDP sender, receiver; each UDP segment handled
+    independently of others\\
+    UDP use: streaming multimedia
+    apps (loss tolerant, rate
+    sensitive), DNS, SNMP\\
+    Why UDP? No connection delay, simple (stateless), small header size, no congestion control
+
+    \subsection{Pipeling}
+    pipelining: sender allows multiple, “in-flight”, yet-to-beacknowledged pkts
+    \subsubsection{Go-Back-N}
+    \begin{itemize}
+        \item sender can have up to N
+              unacked packets in pipeline
+        \item receiver only sends
+              cumulative ack
+              \begin{itemize}
+                  \item doesn't ack packet if
+                        there's a gap
+                  \item sender has timer for oldest
+                        unacked packet
+                        \begin{itemize}
+                            \item when timer expires,
+                                  retransmit all unacked
+                                  packets
+                        \end{itemize}
+              \end{itemize}
+    \end{itemize}
+
+    \subsubsection{Selective Repeat}
+    \begin{itemize}
+        \item sender can have up to N
+              unack'ed packets in pipeline
+        \item rcvr sends individual ack for
+              each packet
+        \item sender maintains timer for each
+              unacked packet
+              \begin{itemize}
+                  \item when timer expires,
+                        retransmit only that
+                        unacked packet
+              \end{itemize}
+    \end{itemize}
+    for packet n, n should be in [sendbase,sendbase+N] for sender, n can be in [rcvbase,rcvbase+N-1] (buffer or deliver) or [rcvbase-N,rcvbase-1] for receiver, otherwise ignore
+
+    \subsection{TCP}
+    ACK number is for next byte expected from other side, cumulative\\
+    Handshake: Send SYN, receive SYNACK, send ACK (2nd ACK segment may contain payload)\\
+    \subsubsection{TCP Fast Retransmit}
+    \begin{itemize}
+        \item time-out period often
+              relatively long:
+              \begin{itemize}
+                  \item long delay before
+                        resending lost packet
+              \end{itemize}
+        \item detect lost segments via
+              duplicate ACKs.
+              \begin{itemize}
+                  \item sender often sends many
+                        segments back-to-back
+                  \item if segment is lost, there
+                        will likely be many
+                        duplicate ACKs.
+              \end{itemize}
+    \end{itemize}
+    triple duplicate ACKs: resend unacked
+    segment with smallest
+    seq \#
+    \subsubsection{TCP Congestion Control}
+    \begin{itemize}
+        \item approach:sender increases transmission rate (window size),
+              probing for usable bandwidth, until loss occurs
+              \begin{itemize}
+                  \item additive increase: increase cwnd by 1 MSS every RTT
+                        until loss detected
+                  \item multiplicative decrease: cut cwnd in half after loss
+              \end{itemize}
+    \end{itemize}
+    \subsubsection{TCP Slow Start}
+    \begin{itemize}
+        \item when connection begins, increase
+              rate exponentially until first loss
+              event:
+              \begin{itemize}
+                  \item initially cwnd = 1 MSS
+                  \item double cwnd every RTT
+                  \item done by incrementing cwnd
+                        for every ACK received
+              \end{itemize}
+    \end{itemize}
+    \subsubsection{TCP: Detecting, Reacting to Loss}
+    \begin{itemize}
+        \item loss indicated by timeout:
+              \begin{itemize}
+                  \item cwnd set to 1 MSS;
+                  \item window then grows exponentially (as in slow start) to threshold,
+                        then grows linearly
+              \end{itemize}
+        \item loss indicated by 3 duplicate ACKs: TCP RENO
+              \begin{itemize}
+                  \item dup ACKs indicate network capable of delivering some segments
+                  \item cwnd is cut in half window then grows linearly
+              \end{itemize}
+        \item TCP Tahoe always sets cwnd to 1 (timeout or 3 duplicate acks)
+    \end{itemize}
+
+    \subsubsection{TCP: Switching from Slow Start to CA}
+    Q: when should the
+    exponential increase
+    switch to linear?\\
+    A: when cwnd gets
+    to 1/2 of its value
+    before timeout.\\
+    Implementation:
+    \begin{itemize}
+        \item variable ssthresh
+        \item on loss event, ssthresh is
+              set to 1/2 of cwnd just
+              before loss event
+    \end{itemize}
 
     \section{Mobile IP}
     Pros:
