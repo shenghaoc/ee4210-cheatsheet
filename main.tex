@@ -80,6 +80,12 @@
     \setlength{\multicolsep}{1pt}
     \setlength{\columnsep}{2pt}
 
+    \section{Network Delays and Losses}
+    $d_{\text{nodal}}=d_{\text{proc}}+d_{\text{queue}}+d_{\text{trans}}+d_{\text{pop}}$\\
+    $d_{\text{trans}}=\frac{L}{R}$ ($L$: length of packet, $R$: transmission rate)\\
+    $d_{\text{queue}}=d_{\text{trans}}\times l_{\text{queue}}$, ($l_{\text{queue}}$: average length of queue) \\
+    $d_{\text{prop}}=\frac{D}{s}$ ($D$: distance between nodes, $s$: propagation speed)\\
+
     \section{Fourier Transform}
     Delta function:
     1D:
