@@ -311,6 +311,181 @@
         \item need to allocate an adress in foreign network
     \end{enumerate}
 
+    \section{Application Layer}
+    \subsection{HTTP overview}
+    port 80\\
+    HTTP response time:
+    \begin{itemize}
+        \item one RTT to initiate TCP
+              connection
+        \item one RTT for HTTP request and
+              first few bytes of HTTP response
+              to return
+        \item file transmission time
+    \end{itemize}
+    HTTP request message:
+    \begin{verbatim}
+GET /index.html HTTP/1.1\r\n
+Host: www-net.cs.umass.edu\r\n
+User-Agent: Firefox/3.6.10\r\n
+Accept: text/html,application/xhtml+xml\r\n
+Accept-Language: en-us,en;q=0.5\r\n
+Accept-Encoding: gzip,deflate\r\n
+Accept-Charset: ISO-8859-1,utf-8;q=0.7\r\n
+Keep-Alive: 115\r\n
+Connection: keep-alive\r\n
+    \end{verbatim}
+    POST method:
+    \begin{itemize}
+        \item web page often includes form
+              input
+        \item user input sent from client to
+              server in entity body of HTTP
+              POST request message
+    \end{itemize}
+
+    GET method (for sending data to
+    server):
+    \begin{itemize}
+        \item include user data in URL field of HTTP
+              GET request message (following a `?`'):
+    \end{itemize}
+    HEAD method:
+    \begin{itemize}
+        \item requests headers (only) that
+              would be returned if specified
+              URL were requested with an HTTP
+              GET method.
+    \end{itemize}
+    PUT method:
+    \begin{itemize}
+        \item uploads new file (object) to
+              server
+        \item  completely replaces file that
+              exists at specified URL with
+              content in entity body of POST
+              HTTP request message
+    \end{itemize}
+
+    HTTP response message:
+    \begin{verbatim}
+HTTP/1.1 200 OK\r\n
+Date: Sun, 26 Sep 2010 20:09:20 GMT\r\n
+Server: Apache/2.0.52 (CentOS)\r\n
+Last-Modified: Tue, 30 Oct 2007 17:00:02
+GMT\r\n
+ETag: "17dc6-a5c-bf716880"\r\n
+Accept-Ranges: bytes\r\n
+Content-Length: 2652\r\n
+Keep-Alive: timeout=10, max=100\r\n
+Connection: Keep-Alive\r\n
+Content-Type: text/html; charset=ISO-8859-
+1\r\n
+\r\n
+data data data data data ... 
+    \end{verbatim}
+    \subsection{Electronic Mail: SMTP}
+    \begin{itemize}
+        \item uses TCP to reliably transfer
+              email message from client to
+              server, port 25
+              \begin{itemize}
+                  \item direct transfer: sending server
+                        (acting like client) to receiving
+                        server
+              \end{itemize}
+        \item three phases of transfer
+              \begin{itemize}
+                  \item SMTP handshaking (greeting)
+                  \item SMTP transfer of messages
+                  \item SMTP closure
+              \end{itemize}
+        \item command/response interaction
+              (like HTTP)
+              \begin{itemize}
+                  \item commands: ASCII text
+                  \item response: status code and phrase
+              \end{itemize}
+    \end{itemize}
+
+    \subsection{Mail Access Protocols}
+    \begin{itemize}
+        \item SMTP: delivery/storage to receiver's server
+              mail access protocol: retrieval from server
+        \item POP: Post Office Protocol [RFC 1939]: authorization,
+              download
+        \item Internet Mail Access Protocol [RFC 1730]: more
+              features, including manipulation of stored msgs on server
+        \item Gmail, Hotmail, Yahoo! Mail, etc.
+    \end{itemize}
+
+    \subsection{POP3 (More) and IMAP}
+    more about POP3
+    \begin{itemize}
+        \item previous example uses
+              POP3 ``download and
+              delete'' mode
+              \begin{itemize}
+                  \item Bob cannot re-read e-mail
+                        if he changes client
+              \end{itemize}
+        \item POP3 ``download-andkeep'': copies of messages
+              on different clients
+        \item POP3 is stateless across
+              sessions
+    \end{itemize}
+    IMAP
+    \begin{itemize}
+        \item keeps all messages in one
+              place: at server
+        \item allows user to organize
+              messages in folders
+        \item keeps user state across
+              sessions:
+              \begin{itemize}
+                  \item names of folders and
+                        mappings between
+                        message IDs and folder
+                        name
+              \end{itemize}
+    \end{itemize}
+
+    \subsection{DNS}
+    Domain Name System:\\
+    distributed database\\
+    implemented in hierarchy of
+    many name servers
+    application-layer protocol:\\
+    hosts, name servers communicate
+    to resolve names (address/name
+    translation)
+    \begin{itemize}
+        \item note: core Internet function,
+              implemented as applicationlayer protocol
+        \item complexity at network's
+              ``edge''
+    \end{itemize}
+
+    \subsection{DNS Name Resolution}
+    iterated query:
+    \begin{itemize}
+        \item contacted server replies
+              with name of server to
+              contact
+        \item ``I don't know this
+              name, but ask this
+              server''
+    \end{itemize}
+    recursive query:
+    \begin{itemize}
+        \item puts burden of name
+              resolution on
+              contacted name
+              server
+        \item heavy load at upper
+              levels of hierarchy?
+    \end{itemize}
+
     \section{Ethernet Frame}
     Source IP\\
     Destination IP\\
