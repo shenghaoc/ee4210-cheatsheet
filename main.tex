@@ -295,6 +295,40 @@
               before loss event
     \end{itemize}
 
+    \section{Data Link Layer}
+    \subsection{Slotted ALOHA}
+    \begin{itemize}
+        \item when node obtains fresh
+              frame, transmits in next slot
+              \begin{itemize}
+                  \item if no collision: node can send
+                        new frame in next slot
+                  \item if collision: node retransmits
+                        frame in each subsequent
+                        slot with probability p until
+                        success
+              \end{itemize}
+    \end{itemize}
+
+    \subsection{CSMA (carrier sense multiple access)}
+    CSMA: listen before transmit:
+    \begin{itemize}
+        \item if channel sensed idle: transmit entire frame
+        \item if channel sensed busy, defer transmission
+    \end{itemize}
+    CSMA/CD: carrier sensing, deferral as in CSMA
+    \begin{itemize}
+        \item collisions detected within short time
+        \item colliding transmissions aborted, reducing channel wastage
+    \end{itemize}
+    binary (exponential) backoff: after mth collision, NIC
+    chooses $K$ at random
+    from ${0,1,2, \ldots, 2m-1}$.
+    NIC waits $K\cdot512$ bit
+    times, returns to sensing step\\
+    harder to sense in wireless, overwhelming local transmission strength\\
+    ``taking turns'' MAC protocols: polling, token passing
+
     \section{Mobile IP}
     Pros:
     \begin{itemize}
