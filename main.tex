@@ -486,6 +486,17 @@ data data data data data ...
               levels of hierarchy?
     \end{itemize}
 
+    \section{Multimedia Netowrking}
+    \textit{leaky bucket}: limit input to specified burst size and average
+    rate
+    \begin{itemize}
+        \item bucket can hold b tokens
+        \item tokens generated at rate r token/sec unless bucket full
+        \item over interval of length t: number of packets admitted less
+        than or equal to (r t + b)
+    \end{itemize}
+    Max delay after passing through the bucket: $d_\text{max}=\frac{b_1}{R\cdot w_1/\sum w_j}$
+
     \section{Ethernet Frame}
     Source IP\\
     Destination IP\\
