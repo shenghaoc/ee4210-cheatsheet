@@ -493,7 +493,7 @@ data data data data data ...
         \item bucket can hold b tokens
         \item tokens generated at rate r token/sec unless bucket full
         \item over interval of length t: number of packets admitted less
-        than or equal to (r t + b)
+              than or equal to (r t + b)
     \end{itemize}
     Max delay after passing through the bucket: $d_\text{max}=\frac{b_1}{R\cdot w_1/\sum w_j}$
 
@@ -512,6 +512,63 @@ data data data data data ...
     person or entity. It is useful to prevent adversaries from sending information or
     authenticating while pretending to be someone else.\\
 
+    \section{Network Security}
+    \subsection{Principles of Cryptography}
+    $m$: plaintext message \\
+    $K_A(m)$: ciphertext, encrypted with key $K_A$\\
+    $m = K_B(K_A(m))$
+    \subsubsection{Public Key Cryptography}
+    \begin{itemize}
+        \item sender, receiver do not
+              share secret key
+        \item public encryption key
+              known to all
+        \item decryption key
+              known only to receiver
+    \end{itemize}
+    \subsubsection{Creating public/private key
+        pair}
+    \begin{itemize}
+        \item choose two large prime numbers p, q.
+              (e.g., 1024 bits each)
+        \item compute $n = pq$, $z = (p-1)(q-1)$
+        \item choose $e$ (with $e<n$) that has no common factors
+              with $z$ ($e$, $z$ are
+              ``relatively prime'').
+        \item choose $d$ such that $ed-1$ is exactly divisible by $z$.
+              (in other words: $ed \bmod z = 1$).
+        \item public key is $(n,e)$. private key is $(n,d)$.
+    \end{itemize}
+    to encrypt message m (<n), compute
+    $c = m^e \bmod n$\\
+    to decrypt received bit pattern, c, compute
+    $m = c^d \bmod n$\\
+    $m = (m^e \bmod n)^d \bmod n$\\
+    useful property: $K_B^-(K_B^+(m))=m=K_B^+(K_B^-(m))$
+    \subsection{Message Integrity, Authentication}
+    Message Authentication Code (MAC): need to share secret to calculate and verify $H(m||s)$
+    \subsubsection{Certification Authorities}
+    binds public key to particular
+    entity, E
+    \subsubsection{end-point authentication}
+    nonce: number (R) used only once-in-a-lifetime\\
+    playback attack: use nonce and public key cryptography\\
+    man in the middle attack
+    \subsection{Securing Email}
+    random symmetric private key and encrypt it with public key\\
+    source authentication, message integrity: digitally sign with private key
+    \subsection{SSL/TLS}
+    \subsubsection{Almost SSL/TLS}
+    3 phases: handshake, key derivation, data transfer\\
+    Slice Master Secret key into four:
+    \begin{itemize}
+        \item EB = session encryption key for data sent from Bob to
+              Alice
+        \item MB = session MAC key for data sent from Bob to Alice
+        \item EA = session encryption key for data sent from Alice to
+              Bob
+        \item MA = session MAC key for data sent from Alice to Bob
+    \end{itemize}
 \end{multicols}
 
 \end{document}
