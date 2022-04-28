@@ -125,22 +125,6 @@
     presentation and session from ISO/OSI must be implemented in application \textit{if needed}
 
     \section{Transport Layer}
-    \subsection{Transport Services and Protocols}
-    \begin{itemize}
-        \item provide logical communication
-              between app processes running on
-              different hosts
-        \item transport protocols run in end
-              systems
-              \begin{itemize}
-                  \item send side: breaks app messages
-                        into segments, passes to
-                        network layer
-                  \item rcv side: reassembles segments
-                        into messages, passes to app
-                        layer
-              \end{itemize}
-    \end{itemize}
 
     \subsection{TCP vs UDP}
     \begin{itemize}
@@ -244,7 +228,7 @@
     seq \#
     \subsubsection{TCP Congestion Control}
     \begin{itemize}
-        \item approach:sender increases transmission rate (window size),
+        \item approach: sender increases transmission rate (window size),
               probing for usable bandwidth, until loss occurs
               \begin{itemize}
                   \item additive increase: increase cwnd by 1 MSS every RTT
@@ -342,22 +326,6 @@
     harder to sense in wireless, overwhelming local transmission strength\\
     ``taking turns'' MAC protocols: polling, token passing
 
-    \section{Mobile IP}
-    Pros:
-    \begin{itemize}
-        \item no need to propagate routing updates again
-        \item no need to modify routers
-        \item does not create additional entries in routing table
-        \item preserves location privacy
-    \end{itemize}
-    Cons:
-    \begin{itemize}
-        \item inefficiency of triangle routing
-        \item packet header overhead of encapsulation
-        \item home agent is single point of failure
-        \item need to allocate an adress in foreign network
-    \end{itemize}
-
     \section{Application Layer}
     \subsection{HTTP overview}
     port 80\\
@@ -373,14 +341,6 @@
     HTTP request message:
     \begin{verbatim}
 GET /index.html HTTP/1.1\r\n
-Host: www-net.cs.umass.edu\r\n
-User-Agent: Firefox/3.6.10\r\n
-Accept: text/html,application/xhtml+xml\r\n
-Accept-Language: en-us,en;q=0.5\r\n
-Accept-Encoding: gzip,deflate\r\n
-Accept-Charset: ISO-8859-1,utf-8;q=0.7\r\n
-Keep-Alive: 115\r\n
-Connection: keep-alive\r\n
     \end{verbatim}
     POST method:
     \begin{itemize}
@@ -417,19 +377,6 @@ Connection: keep-alive\r\n
     HTTP response message:
     \begin{verbatim}
 HTTP/1.1 200 OK\r\n
-Date: Sun, 26 Sep 2010 20:09:20 GMT\r\n
-Server: Apache/2.0.52 (CentOS)\r\n
-Last-Modified: Tue, 30 Oct 2007 17:00:02
-GMT\r\n
-ETag: "17dc6-a5c-bf716880"\r\n
-Accept-Ranges: bytes\r\n
-Content-Length: 2652\r\n
-Keep-Alive: timeout=10, max=100\r\n
-Connection: Keep-Alive\r\n
-Content-Type: text/html; charset=ISO-8859-
-1\r\n
-\r\n
-data data data data data ... 
     \end{verbatim}
     \subsection{Electronic Mail: SMTP}
     \begin{itemize}
@@ -533,6 +480,34 @@ data data data data data ...
               levels of hierarchy?
     \end{itemize}
 
+    \section{Wireless and Mobile Networks}
+    \begin{itemize}
+        \item indirect routing: communication from correspondent to mobile
+        goes through home agent, then forwarded to foreign agent
+        \item direct routing: correspondent gets foreign address of mobile,
+        sends directly to mobile
+    \end{itemize}
+    
+    \subsection{Mobile IP}
+    indirect routing\\
+    Pros:
+    \begin{itemize}
+        \item no need to propagate routing updates again
+        \item no need to modify routers
+        \item does not create additional entries in routing table
+        \item preserves location privacy
+    \end{itemize}
+    Cons:
+    \begin{itemize}
+        \item inefficiency of triangle routing
+        \item packet header overhead of encapsulation
+        \item home agent is single point of failure
+        \item need to allocate an adress in foreign network
+    \end{itemize}
+
+    \subsection{GSM: Handoff with Common MSC}
+    old informs MSC; MSC sets up path to new; new allocates; new signals MSC, old BSS; old tells mobile to perform handoff; mobile, new signal to activate; mobile channels via new BSS to MSC
+
     \section{Multimedia Networking}
     \textit{leaky bucket}: limit input to specified burst size and average
     rate
@@ -543,14 +518,6 @@ data data data data data ...
               than or equal to (r t + b)
     \end{itemize}
     Max delay after passing through the bucket: $d_\text{max}=\frac{b_1}{R\cdot w_1/\sum w_j}$
-
-    \section{Ethernet Frame}
-    Source IP\\
-    Destination IP\\
-    Source MAC\\
-    Destination MAC
-
-    If not on same LAN, destination MAC is of router
 
     \section{Network Security}
     \subsection{Principles of Cryptography}
